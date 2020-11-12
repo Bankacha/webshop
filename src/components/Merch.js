@@ -1,7 +1,7 @@
 import React from 'react';
 import Cart from './Cart';
 import Products from './Products'
-
+import { Route } from 'react-router-dom';
 const axios = require('axios').default;
 
 
@@ -12,7 +12,8 @@ export default class Merch extends React.Component {
         merch: [],
         cart: [],
         cartCount: 0,
-        totalCost: null
+        totalCost: null,
+        searchField: ''
     }
 
     getAllMerch = () => {
@@ -27,14 +28,41 @@ export default class Merch extends React.Component {
         this.getAllMerch()
     }
 
+    deleteButton = (id) => {
+        // axios.delete(`https://5fabf5ed03a60500167e74ff.mockapi.io/webshop/merch/${id}`).then(response => {
+        //     this.getAllMerch()
+        // })
+        let newCart =this.state.cart.filter( p => p.id !== id)
+        this.setState({
+            cart: newCart
+        })
+    }
+
+    pushProduct = (obj) => {
+        axios.post(`https://5fabf5ed03a60500167e74ff.mockapi.io/webshop/merch`, {
+            product: obj.product,
+            name: obj.name,
+            price: obj.price
+        }).then(response => {
+            this.getAllMerch()
+        })
+    }
+
     handleAddToCart = (product) => {
-        let total = this.state.totalCost + product.price
+        const newPrice = parseInt(product.price)
+        let total = this.state.totalCost + newPrice
         this.setState({
             cart: [...this.state.cart, product],
             cartCount: +1,
             totalCost: total
         })
-        console.log(product.price)
+        // this.pushProduct(product)
+    }
+
+    handleSearchInput = (event) => {
+        this.setState({
+            searchField: event.target.value
+        })
     }
 
 
@@ -44,11 +72,11 @@ export default class Merch extends React.Component {
             <div>
                 {
                     this.state.cart.length > 0 ? (
-                        <Cart cart={this.state.cart} cost={this.state.totalCost}></Cart>
+                        <Cart cart={this.state.cart} cost={this.state.totalCost} delete={this.deleteButton}></Cart>
 
                     ) : null
                 }
-                <Products productList={this.state.merch} addToCart={this.handleAddToCart}></Products>
+                <Products productList={this.state.merch} addToCart={this.handleAddToCart} pushProduct={this.pushProduct} searchInput={this.state.searchField} handleSearch={this.handleSearchInput}></Products>
             </div>
 
         )

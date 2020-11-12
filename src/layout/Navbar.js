@@ -6,10 +6,10 @@ export default function Navbar (props) {
         return (
             <Nav variant="tabs" defaultActiveKey="/home">
                 <Nav.Item>
-                    <Nav.Link href="../views/Home.js">Home</Nav.Link>
+                    <Nav.Link href="/">Home</Nav.Link>
                 </Nav.Item>
                 <Nav.Item>
-                    <Nav.Link eventKey="../components/Merch">Shop</Nav.Link>
+                    <Nav.Link href="./components/Cart.js">Shop</Nav.Link>
                 </Nav.Item>
                 
             </Nav>
