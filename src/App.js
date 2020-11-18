@@ -1,5 +1,6 @@
 import './App.css';
 import Home from './views/Home';
+// import Cart from './components/Cart';
 import Layout from './layout/Layout';
 import 'bootstrap/dist/css/bootstrap.min.css';
 // {/* <link
@@ -12,8 +13,9 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
+  // Link
 } from "react-router-dom";
+
 
 
 function App() {
@@ -23,6 +25,8 @@ function App() {
       <Switch>
 
         <Route path="/" component={Home}></Route>
+
+        {/* <Route path="/cart" component={Cart}></Route> */}
 
       </Switch>
     </Layout>

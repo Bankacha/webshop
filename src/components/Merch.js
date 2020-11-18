@@ -61,7 +61,7 @@ export default class Merch extends React.Component {
 
         if (existing) {
 
-            let newExisting = {...existing};
+            let newExisting = { ...existing };
             let newCart = [...this.state.cart];
             const existingIndeex = this.state.cart.indexOf(existing)
             newExisting.quantity += 1;
@@ -77,7 +77,7 @@ export default class Merch extends React.Component {
                 cartCount: this.state.cartCount + 1,
             })
         }
-        console.log(cartItem)
+        console.log(this.state.cart)
 
     }
 
@@ -87,14 +87,50 @@ export default class Merch extends React.Component {
         })
     }
 
-    calculateTotalCost = (product) => {
+    calculateTotalCost = () => {
         let total = 0;
-        for(let item of this.state.cart) {
+        for (let item of this.state.cart) {
             let price = parseInt(item.item.price)
             total += price * item.quantity
         }
         return total
     }
+
+    increseQuantity = (item) => {
+        const idx = this.state.cart.indexOf(item);
+        let newItem = { ...item, quantity: item.quantity + 1 }
+        const newCart = [...this.state.cart]
+        newCart[idx] = newItem;
+        this.setState({
+            cart: newCart
+        })
+    }
+
+    decreseQuantity = (item) => {
+        console.log(item)
+        if (item.quantity === 1) {
+            this.setState({
+                cart: this.state.cart.filter(i => i.item.id !== item.item.id)
+            })
+
+        } else {
+            const index = this.state.cart.indexOf(item);
+            const newCart = [...this.state.cart];
+            const newItem = { ...item, quantity: item.quantity - 1 };
+            newCart[index] = newItem;
+            this.setState({
+                cart: newCart
+            })
+        }
+
+    }
+
+    // deleteFromCart = (item) => {
+    //     let newCart = this.state.cart.filter(i => i.id !== item.id)
+    //     this.setState({
+    //         cart: newCart
+    //     })
+    // }
 
     render() {
 
@@ -102,7 +138,7 @@ export default class Merch extends React.Component {
             <div>
                 {
                     this.state.cart.length > 0 ? (
-                        <Cart cart={this.state.cart} cost={this.state.totalCost} delete={this.deleteButton} total={this.calculateTotalCost}></Cart>
+                        <Cart cart={this.state.cart} cost={this.state.totalCost} delete={this.deleteButton} total={this.calculateTotalCost} increse={this.increseQuantity} decrese={this.decreseQuantity}></Cart>
 
                     ) : null
                 }
